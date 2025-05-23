@@ -1,38 +1,266 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+:focus,
+:active {
+  outline: none;
+}
+a:focus,
+a:active {
+  outline: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+nav,
+footer,
+header,
+aside {
+  display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+ background: linear-gradient(135deg, #1e1f3a, #3c3f5a);
+}
+input,
+button,
+textarea {
+  font-family: inherit;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+input::-ms-clear {
+  display: none;
+}
+button {
+  cursor: pointer;
+}
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+a,
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+ul li {
+  list-style: none;
+}
+img {
+  vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+
+
+
+.header{
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  max-width: 1260px;
+  width: 100%;
+  margin: 0 auto;
+  height: 85vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+  padding: 0 20px; /* Отступы слева и справа */
+}
+
+
+.textHeader {
+  font-family: "DM Sans";
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22.13px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.header{
+  color: #fff;
+}
+
+.welcome {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideIn 1.5s ease-in-out forwards;
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  position: relative;
+  bottom: 50%;
+}
+
+@keyframes slideIn {
+  0% { opacity: 0; transform: translateX(-50px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.msg {
+  
+  color: #ffffff;
+  padding: 10px 12px;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%; /* Сообщение растягивается, но не выходит за границы */
+  margin-bottom: 10px; 
+}
+
+.msgWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-end;
+  width: 900px; /* Совпадает с шириной input */
+  margin: 0 auto; /* Центрирует блок */
+
+}
+.msg-wrapper::-webkit-scrollbar {
+  opacity: 0;
+}
+
+.msg.my-msg {
+  margin-left: auto;
+  
+}
+
+.my-msg{
+ background: linear-gradient(180deg, #393c63, #505375);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%; /* Сообщение растягивается, но не выходит за границы */
+  margin-bottom: 10px; 
+}
+* {
+  font-family: "Montserrat";
+}
+
+ol {
+  list-style-position: inside;
+}
+
+.input {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  max-width: 1000px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3c3f5a, #25273e);
+  padding: 10px; /* Уменьшаем padding, чтобы соответствовало размеру input */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
+  height: 80px;
 }
 
-.App-link {
-  color: #61dafb;
+.inputText {
+  width: 100%;
+  background: transparent;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.inputText::placeholder {
+  color: #CCCCCC;
+}
+
+.inputContainer {
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+}
+
+.send, .voice{
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.recordingIndicator {
+  width: 10px;
+  height: 10px;
+  background-color: #ffcc00;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-right: 10px;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end; /* Размещает кнопку справа */
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #282c34; /* Темный фон */
+}
+
+.languageButton {
+  background-color: #ffcc00;
+  border: none;
+  color: #333;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.languageButton:hover {
+  background-color: #ff9900;
+}
+
+.languageButton img {
+  width: 16px;
+  height: 16px;
 }
