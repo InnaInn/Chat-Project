@@ -84,14 +84,25 @@ h6 {
 
 .wrapper {
   max-width: 1260px;
-  width: 100%;
+  /*width: 100%;*/
   margin: 0 auto;
-  height: 85vh;
+ /* height: 85vh;*/
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 30px;
   padding: 0 20px; /* Отступы слева и справа */
+  
+}
+
+@keyframes slideOut {
+  0% { opacity: 1; transform: translateX(0); }
+  50% { opacity: 0.5; transform: translateX(70px); }
+  100% { opacity: 0; transform: translateX(200px); }
+}
+
+.hidden {
+  animation: slideOut 1.5s ease-in-out forwards;
 }
 
 
@@ -115,9 +126,10 @@ h6 {
   color: #ffffff;
   font-size: 24px;
   text-align: center;
-  position: relative;
-  bottom: 50%;
+  margin-top: 150px;
 }
+
+
 
 @keyframes slideIn {
   0% { opacity: 0; transform: translateX(-50px); }

@@ -39,48 +39,69 @@ function App() {
     setInputText(e.target.value);
   };
 
- useEffect(() => {
-  const ws = new WebSocket("ws://localhost:8080");
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080");
 
-  ws.onopen = () => {
-    console.log("✅ WebSocket подключён!");
-    setSocket(ws);
+    ws.onopen = () => {
+      console.log("✅ WebSocket подключён!");
+      setSocket(ws);
+    };
+
+    ws.onerror = (event) => {
+      console.error("🔥 WebSocket ошибка:", event);
+    };
+
+    ws.onclose = (event) => {
+      console.warn("🚫 WebSocket закрыт! Код:", event.code, "Причина:", event.reason);
+    };
+    /*
+  
+    ws.onmessage = (event) => {
+      console.log("🚫 Received message:", event);
+      let messageText = JSON.parse(event.data).text;
+      alert(messageText);
+    };
+    */
+
+    ws.onmessage = (event) => {
+      console.log("🚫 Received message:", event);
+      let messageText = JSON.parse(event.data).text;
+
+      setMessages((prev) => [...prev, { text: messageText, userId: "server" }]);
+    };
+
+
+    return () => ws.close();
+  }, []);
+
+  const sendMessage = () => {
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket ещё не готов, попробуйте снова");
+      return;
+    }
+
+    if (inputText.trim() !== "") {
+      const newMessage = { text: inputText, userId };
+
+      setMessages((prev) => [...prev, newMessage]); // Добавляем сразу в state
+
+      socket.send(JSON.stringify(newMessage)); // Отправляем на сервер
+      setInputText(""); // Очищаем поле ввода
+    }
+    if (showWelcome) {
+      setFadeOut(true); // Запускаем анимацию исчезновения
+      setTimeout(() => setShowWelcome(false), 1500); // Ждём 1.5 секунды перед удалением
+    }
   };
-
-  ws.onerror = (event) => {
-    console.error("🔥 WebSocket ошибка:", event);
-  };
-
-  ws.onclose = (event) => {
-    console.warn("🚫 WebSocket закрыт! Код:", event.code, "Причина:", event.reason);
-  };
-
-  ws.onmessage = (event) => {
-    console.log("🚫 Received message:", event);
-    let messageText = JSON.parse(event.data).text;
-    alert(messageText);
-  };
-
-  return () => ws.close();
-}, []);
-
-const sendMessage = () => {
-  if (!socket || socket.readyState !== WebSocket.OPEN) {
-    console.error("WebSocket ещё не готов, попробуйте снова");
-    return;
-  }
-
-  if (inputText.trim() !== "") {
-    const newMessage = { text: inputText, userId };
-    
-    setMessages((prev) => [...prev, newMessage]); // Добавляем сразу в state
-    
-    socket.send(JSON.stringify(newMessage)); // Отправляем на сервер
-    setInputText(""); // Очищаем поле ввода
-  }
-};
 
   console.log(messages, "messages");
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Предотвращает перенос строки
+      sendMessage(); // Вызывает функцию отправки сообщения
+    }
+  };
 
   const startVoiceRecognition = () => {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -109,11 +130,11 @@ const sendMessage = () => {
 
   return (
     <>
-    <header className="header">
-    <button className="languageButton" onClick={toggleLanguage}>
-      {translations[language].changeLanguage}
-    </button>
-    </header>
+      <header className="header">
+        <button className="languageButton" onClick={toggleLanguage}>
+          {translations[language].changeLanguage}
+        </button>
+      </header>
       <div className="wrapper">
         {showWelcome && (
           <div className={`welcome ${fadeOut ? "hidden" : ""}`}>
@@ -135,6 +156,7 @@ const sendMessage = () => {
               className="inputText"
               value={inputText}
               onChange={handleChange}
+              onKeyDown={handleKeyDown} // Добавляем обработчик Enter
               placeholder={translations[language].messagePlaceholder}
             />
           </div>
