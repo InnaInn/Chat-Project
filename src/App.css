@@ -83,15 +83,14 @@ h6 {
 }
 
 .wrapper {
-  max-width: 1260px;
-  /*width: 100%;*/
+  max-width: 940px;
   margin: 0 auto;
- /* height: 85vh;*/
+  height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 30px;
-  padding: 0 20px; /* Отступы слева и справа */
+  padding: 0 20px; 
   
 }
 
@@ -141,8 +140,6 @@ h6 {
   color: #ffffff;
   padding: 10px 12px;
   display: inline-block;
-  width: max-content;
-  max-width: 100%; /* Сообщение растягивается, но не выходит за границы */
   margin-bottom: 10px; 
 }
 
@@ -151,10 +148,12 @@ h6 {
   flex-direction: column;
   gap: 20px;
   justify-content: flex-end;
-  width: 900px; /* Совпадает с шириной input */
-  margin: 0 auto; /* Центрирует блок */
-
+  height:  -webkit-fill-available;
+  height: calc(100vh - 120px); /* Минус высота header и input */
+  overflow-y: auto; /* Добавляет прокрутку */
+ 
 }
+
 .msg-wrapper::-webkit-scrollbar {
   opacity: 0;
 }
