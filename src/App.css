@@ -37,10 +37,6 @@ body {
   min-height: 100vh; /* Позволяет расти */
 }
 
-body::-webkit-scrollbar-track {
-  background: red; /* Цвет фона */
-  border-radius: 8px;
-}
 
 input,
 button,
@@ -284,4 +280,21 @@ textarea {
 .languageButton img {
   width: 16px;
   height: 16px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #25273e, #3c3f5a); /* Темный градиент */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #32344d, #464866); /* Чуть светлее */
 }
