@@ -76,14 +76,29 @@ function App() {
     return () => ws.close();
   }, []);
 
-  useEffect(() => {
-  if (msgWrapperRef.current && msgWrapperRef.current.scrollHeight > window.innerHeight - 120) {
-    document.body.style.overflowY = "auto"; // Включаем скролл в браузере
-  } else {
-    document.body.style.overflowY = "hidden"; // Отключаем скролл, если места достаточно
+ useEffect(() => {
+  if (msgWrapperRef.current) {
+    const container = msgWrapperRef.current;
+
+    // Включаем скролл, только если сообщений больше, чем можно вместить
+    if (container.scrollHeight > container.clientHeight) {
+      container.style.overflowY = "auto";
+    } else {
+      container.style.overflowY = "hidden";
+    }
+
+    // Автопрокрутка вниз
+    const lastMessage = container.lastElementChild;
+    if (lastMessage) {
+      setTimeout(() => {
+        lastMessage.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
   }
 }, [messages]);
-
   const sendMessage = () => {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       console.error("WebSocket ещё не готов, попробуйте снова");
@@ -146,13 +161,13 @@ function App() {
         </button>
       </header>
       <div className="wrapper">
-        {showWelcome && (
-          <div className={`welcome ${fadeOut ? "hidden" : ""}`}>
-            <h2>{translations[language].welcome}</h2>
-          </div>
-        )}
 
         <div className="msgWrapper" ref={msgWrapperRef}>
+          {showWelcome && (
+          <div className={`welcome ${fadeOut ? "hidden" : ""}`}>
+            <h2 className="hi">{translations[language].welcome}</h2>
+          </div>
+        )}
           {messages.map((msg, index) => (
             <div className={`msg ${msg.userId === userId ? "my-msg" : ""}`} key={index}>
               {msg.text}

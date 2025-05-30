@@ -36,6 +36,12 @@ body {
   overflow-y: auto; /* Прокрутка браузером */
   min-height: 100vh; /* Позволяет расти */
 }
+
+body::-webkit-scrollbar-track {
+  background: red; /* Цвет фона */
+  border-radius: 8px;
+}
+
 input,
 button,
 textarea {
@@ -124,9 +130,9 @@ h6 {
   color: #ffffff;
   font-size: 24px;
   text-align: center;
-  margin-top: 150px;
+  
+ 
 }
-
 
 
 @keyframes slideIn {
@@ -147,8 +153,9 @@ h6 {
   flex-direction: column;
   gap: 20px;
   justify-content: flex-end; /* Сообщения внизу */
-   min-height: calc(100vh - 200px); /* Гарантируем рост при добавлении новых сообщений */
+  min-height: calc(100vh - 200px); /* Гарантируем рост при добавлении новых сообщений */
   
+ 
 }
 
 
