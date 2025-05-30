@@ -32,8 +32,9 @@ html,
 body {
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
- background: linear-gradient(135deg, #1e1f3a, #3c3f5a);
+  background: linear-gradient(135deg, #1e1f3a, #3c3f5a);
+  overflow-y: auto; /* Прокрутка браузером */
+  min-height: 100vh; /* Позволяет расти */
 }
 input,
 button,
@@ -85,13 +86,11 @@ h6 {
 .wrapper {
   max-width: 940px;
   margin: 0 auto;
-  height: 70vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 30px;
-  padding: 0 20px; 
-  
+  padding: 70px 20px 120px; /* Отступы между header и input */
+ 
 }
 
 @keyframes slideOut {
@@ -147,12 +146,12 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  justify-content: flex-end;
-  height:  -webkit-fill-available;
-  height: calc(100vh - 120px); /* Минус высота header и input */
-  overflow-y: auto; /* Добавляет прокрутку */
- 
+  justify-content: flex-end; /* Сообщения внизу */
+   min-height: calc(100vh - 200px); /* Гарантируем рост при добавлении новых сообщений */
+  
 }
+
+
 
 .msg-wrapper::-webkit-scrollbar {
   opacity: 0;
@@ -196,6 +195,7 @@ ol {
   padding: 10px; /* Уменьшаем padding, чтобы соответствовало размеру input */
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
   height: 80px;
+  z-index: 1000;
 }
 
 .inputText {
@@ -250,6 +250,9 @@ textarea {
   align-items: center;
   padding: 15px 20px;
   background-color: #282c34; /* Темный фон */
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
 }
 
 .languageButton {

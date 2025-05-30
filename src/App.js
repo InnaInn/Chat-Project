@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Send from "./img/send.svg";
 import Voice from "./img/voice.svg";
@@ -13,6 +13,8 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [language, setLanguage] = useState("en");
+  const msgWrapperRef = useRef(null);
+
 
   const translations = {
     ru: {
@@ -74,6 +76,14 @@ function App() {
     return () => ws.close();
   }, []);
 
+  useEffect(() => {
+  if (msgWrapperRef.current && msgWrapperRef.current.scrollHeight > window.innerHeight - 120) {
+    document.body.style.overflowY = "auto"; // Включаем скролл в браузере
+  } else {
+    document.body.style.overflowY = "hidden"; // Отключаем скролл, если места достаточно
+  }
+}, [messages]);
+
   const sendMessage = () => {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       console.error("WebSocket ещё не готов, попробуйте снова");
@@ -90,7 +100,7 @@ function App() {
     }
     if (showWelcome) {
       setFadeOut(true); // Запускаем анимацию исчезновения
-      setTimeout(() => setShowWelcome(false), 1500); // Ждём 1.5 секунды перед удалением
+      setShowWelcome(false); // Ждём 1.5 секунды перед удалением
     }
   };
 
@@ -142,13 +152,14 @@ function App() {
           </div>
         )}
 
-        <div className="msgWrapper">
+        <div className="msgWrapper" ref={msgWrapperRef}>
           {messages.map((msg, index) => (
             <div className={`msg ${msg.userId === userId ? "my-msg" : ""}`} key={index}>
               {msg.text}
             </div>
           ))}
         </div>
+
 
         <div className="input">
           <div className="inputContainer">
