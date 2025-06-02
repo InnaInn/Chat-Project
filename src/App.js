@@ -15,6 +15,7 @@ function App() {
   const [language, setLanguage] = useState("en");
   const msgWrapperRef = useRef(null);
 
+  /*Язык*/
 
   const translations = {
     ru: {
@@ -41,32 +42,26 @@ function App() {
     setInputText(e.target.value);
   };
 
+  /*Подключение к WebSocket*/
+
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
 
     ws.onopen = () => {
-      console.log("✅ WebSocket подключён!");
+      console.log(" WebSocket подключён!");
       setSocket(ws);
     };
 
     ws.onerror = (event) => {
-      console.error("🔥 WebSocket ошибка:", event);
+      console.error("WebSocket ошибка:", event);
     };
 
     ws.onclose = (event) => {
-      console.warn("🚫 WebSocket закрыт! Код:", event.code, "Причина:", event.reason);
+      console.warn("WebSocket закрыт! Код:", event.code, "Причина:", event.reason);
     };
-    /*
-  
-    ws.onmessage = (event) => {
-      console.log("🚫 Received message:", event);
-      let messageText = JSON.parse(event.data).text;
-      alert(messageText);
-    };
-    */
 
     ws.onmessage = (event) => {
-      console.log("🚫 Received message:", event);
+      console.log("Received message:", event);
       let messageText = JSON.parse(event.data).text;
 
       setMessages((prev) => [...prev, { text: messageText, userId: "server" }]);
@@ -76,29 +71,31 @@ function App() {
     return () => ws.close();
   }, []);
 
- useEffect(() => {
-  if (msgWrapperRef.current) {
-    const container = msgWrapperRef.current;
+  /*Прокрутка сообщений*/
 
-    // Включаем скролл, только если сообщений больше, чем можно вместить
-    if (container.scrollHeight > container.clientHeight) {
-      container.style.overflowY = "auto";
-    } else {
-      container.style.overflowY = "hidden";
-    }
+  useEffect(() => {
+    if (msgWrapperRef.current) {
+      const container = msgWrapperRef.current;
 
-    // Автопрокрутка вниз
-    const lastMessage = container.lastElementChild;
-    if (lastMessage) {
-      setTimeout(() => {
-        lastMessage.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 100);
+      if (container.scrollHeight > container.clientHeight) {
+        container.style.overflowY = "auto";
+      } else {
+        container.style.overflowY = "hidden";
+      }
+      const lastMessage = container.lastElementChild;
+      if (lastMessage) {
+        setTimeout(() => {
+          lastMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
+      }
     }
-  }
-}, [messages]);
+  }, [messages]);
+
+  /*Отправка сообщений*/
+
   const sendMessage = () => {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       console.error("WebSocket ещё не готов, попробуйте снова");
@@ -108,25 +105,28 @@ function App() {
     if (inputText.trim() !== "") {
       const newMessage = { text: inputText, userId };
 
-      setMessages((prev) => [...prev, newMessage]); // Добавляем сразу в state
+      setMessages((prev) => [...prev, newMessage]);
 
-      socket.send(JSON.stringify(newMessage)); // Отправляем на сервер
-      setInputText(""); // Очищаем поле ввода
+      socket.send(JSON.stringify(newMessage));
+      setInputText("");
     }
     if (showWelcome) {
-      setFadeOut(true); // Запускаем анимацию исчезновения
-      setShowWelcome(false); // Ждём 1.5 секунды перед удалением
+      setFadeOut(true);
+      setShowWelcome(false);
     }
   };
-
   console.log(messages, "messages");
+
+  /*Отправка на Enter*/
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Предотвращает перенос строки
-      sendMessage(); // Вызывает функцию отправки сообщения
+      event.preventDefault();
+      sendMessage();
     }
   };
+
+  /*Голосовой ввод*/
 
   const startVoiceRecognition = () => {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -134,12 +134,12 @@ function App() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    setIsRecording(true); // Включаем индикатор
+    setIsRecording(true);
 
     recognition.onresult = (event) => {
       const speechText = event.results[0][0].transcript;
       setInputText(speechText);
-      setIsRecording(false); // Отключаем индикатор
+      setIsRecording(false);
     };
 
     recognition.onerror = () => {
@@ -161,28 +161,25 @@ function App() {
         </button>
       </header>
       <div className="wrapper">
-
         <div className="msgWrapper" ref={msgWrapperRef}>
           {showWelcome && (
-          <div className={`welcome ${fadeOut ? "hidden" : ""}`}>
-            <h2 className="hi">{translations[language].welcome}</h2>
-          </div>
-        )}
+            <div className={`welcome ${fadeOut ? "hidden" : ""}`}>
+              <h2 className="hi">{translations[language].welcome}</h2>
+            </div>
+          )}
           {messages.map((msg, index) => (
             <div className={`msg ${msg.userId === userId ? "my-msg" : ""}`} key={index}>
               {msg.text}
             </div>
           ))}
         </div>
-
-
         <div className="input">
           <div className="inputContainer">
             <input
               className="inputText"
               value={inputText}
               onChange={handleChange}
-              onKeyDown={handleKeyDown} // Добавляем обработчик Enter
+              onKeyDown={handleKeyDown}
               placeholder={translations[language].messagePlaceholder}
             />
           </div>
@@ -204,5 +201,4 @@ function App() {
     </>
   );
 }
-
 export default App;

@@ -1,10 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
   padding: 0;
   margin: 0;
   border: 0;
+  font-family: "Montserrat";
 }
+
 *,
 *:before,
 *:after {
@@ -12,10 +15,12 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 :focus,
 :active {
   outline: none;
 }
+
 a:focus,
 a:active {
   outline: none;
@@ -33,10 +38,37 @@ body {
   height: 100vh;
   width: 100vw;
   background: linear-gradient(135deg, #1e1f3a, #3c3f5a);
-  overflow-y: auto; /* Прокрутка браузером */
-  min-height: 100vh; /* Позволяет расти */
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(30, 31, 58, 0) 0%, rgba(60, 63, 90, 0.05) 100%);
+  backdrop-filter: blur(35px);
+  pointer-events: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #25273e, #3c3f5a);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #32344d, #464866);
+}
 
 input,
 button,
@@ -47,23 +79,29 @@ textarea {
 input::-ms-clear {
   display: none;
 }
+
 button {
   cursor: pointer;
 }
+
 button::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
+
 a,
 a:visited {
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: none;
 }
+
 ul li {
   list-style: none;
 }
+
 img {
   vertical-align: top;
 }
@@ -78,9 +116,7 @@ h6 {
   font-weight: 400;
 }
 
-
-
-.header{
+.header {
   margin: 0;
   padding: 0;
 }
@@ -91,20 +127,30 @@ h6 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 70px 20px 120px; /* Отступы между header и input */
- 
+  padding: 70px 20px 120px;
+
 }
 
 @keyframes slideOut {
-  0% { opacity: 1; transform: translateX(0); }
-  50% { opacity: 0.5; transform: translateX(70px); }
-  100% { opacity: 0; transform: translateX(200px); }
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: translateX(70px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(200px);
+  }
 }
 
 .hidden {
   animation: slideOut 1.5s ease-in-out forwards;
 }
-
 
 .textHeader {
   font-family: "DM Sans";
@@ -115,7 +161,7 @@ h6 {
   color: #ffffff;
 }
 
-.header{
+.header {
   color: #fff;
 }
 
@@ -126,35 +172,35 @@ h6 {
   color: #ffffff;
   font-size: 24px;
   text-align: center;
-  
- 
 }
 
 
 @keyframes slideIn {
-  0% { opacity: 0; transform: translateX(-50px); }
-  100% { opacity: 1; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .msg {
-  
   color: #ffffff;
   padding: 10px 12px;
   display: inline-block;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
 .msgWrapper {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  justify-content: flex-end; /* Сообщения внизу */
-  min-height: calc(100vh - 200px); /* Гарантируем рост при добавлении новых сообщений */
-  
- 
+  justify-content: flex-end;
+  min-height: calc(100vh - 200px);
 }
-
-
 
 .msg-wrapper::-webkit-scrollbar {
   opacity: 0;
@@ -162,21 +208,18 @@ h6 {
 
 .msg.my-msg {
   margin-left: auto;
-  
+
 }
 
-.my-msg{
- background: linear-gradient(180deg, #393c63, #505375);
+.my-msg {
+  background: linear-gradient(180deg, #393c63, #505375);
   color: #ffffff;
   border-radius: 8px;
   padding: 10px 12px;
   display: inline-block;
   width: max-content;
-  max-width: 100%; /* Сообщение растягивается, но не выходит за границы */
-  margin-bottom: 10px; 
-}
-* {
-  font-family: "Montserrat";
+  max-width: 100%;
+  margin-bottom: 10px;
 }
 
 ol {
@@ -195,7 +238,7 @@ ol {
   max-width: 1000px;
   border-radius: 12px;
   background: linear-gradient(135deg, #3c3f5a, #25273e);
-  padding: 10px; /* Уменьшаем padding, чтобы соответствовало размеру input */
+  padding: 10px;
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
   height: 80px;
   z-index: 1000;
@@ -210,7 +253,6 @@ ol {
   padding: 10px;
   font-size: 16px;
   border-radius: 6px;
-  
 }
 
 .inputText::placeholder {
@@ -225,7 +267,8 @@ textarea {
   resize: none;
 }
 
-.send, .voice{
+.send,
+.voice {
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -234,7 +277,7 @@ textarea {
 .recordingIndicator {
   width: 10px;
   height: 10px;
-  background-color: #ffcc00;
+  background-color: red;
   border-radius: 50%;
   display: inline-block;
   animation: blink 1s infinite;
@@ -242,17 +285,25 @@ textarea {
 }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .header {
   display: flex;
-  justify-content: flex-end; /* Размещает кнопку справа */
+  justify-content: flex-end;
   align-items: center;
   padding: 15px 20px;
-  background-color: #282c34; /* Темный фон */
+  background-color: #282c34;
   position: fixed;
   width: 100%;
   z-index: 1000;
@@ -280,21 +331,4 @@ textarea {
 .languageButton img {
   width: 16px;
   height: 16px;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #25273e, #3c3f5a); /* Темный градиент */
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #32344d, #464866); /* Чуть светлее */
 }
