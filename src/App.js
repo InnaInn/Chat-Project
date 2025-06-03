@@ -14,33 +14,7 @@ function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [language, setLanguage] = useState("en");
   const msgWrapperRef = useRef(null);
-
-  /*Язык*/
-
-  const translations = {
-    ru: {
-      welcome: "Привет 👋! Начни общение прямо сейчас!",
-      messagePlaceholder: "Сообщение...",
-      changeLanguage: "Сменить язык",
-      send: "Отправить",
-      startVoice: "Голосовой ввод",
-    },
-    en: {
-      welcome: "Hey there 👋! Start chatting right now!",
-      messagePlaceholder: "Message...",
-      changeLanguage: "Change language",
-      send: "Send",
-      startVoice: "Voice Input",
-    },
-  };
-
-  const toggleLanguage = () => {
-    setLanguage((prevLang) => (prevLang === "ru" ? "en" : "ru"));
-  };
-
-  const handleChange = (e) => {
-    setInputText(e.target.value);
-  };
+  const textareaRef = useRef(null);
 
   /*Подключение к WebSocket*/
 
@@ -71,7 +45,41 @@ function App() {
     return () => ws.close();
   }, []);
 
-  /*Прокрутка сообщений*/
+  /*Язык*/
+
+  const translations = {
+    ru: {
+      welcome: "Привет 👋! Начни общение прямо сейчас!",
+      messagePlaceholder: "Сообщение...",
+      changeLanguage: "Сменить язык",
+      send: "Отправить",
+      startVoice: "Голосовой ввод",
+    },
+    en: {
+      welcome: "Hey there 👋! Start chatting right now!",
+      messagePlaceholder: "Message...",
+      changeLanguage: "Change language",
+      send: "Send",
+      startVoice: "Voice Input",
+    },
+  };
+
+  const toggleLanguage = () => {
+    setLanguage((prevLang) => (prevLang === "ru" ? "en" : "ru"));
+  };
+
+  /*Расширение textarea, если слишком длинное сообшение*/
+
+  const handleChange = (e) => {
+    setInputText(e.target.value);
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+    }
+  };
+
+  /*Прокрутка сообщений браузер*/
 
   useEffect(() => {
     if (msgWrapperRef.current) {
@@ -104,15 +112,19 @@ function App() {
 
     if (inputText.trim() !== "") {
       const newMessage = { text: inputText, userId };
-
       setMessages((prev) => [...prev, newMessage]);
-
       socket.send(JSON.stringify(newMessage));
       setInputText("");
-    }
-    if (showWelcome) {
-      setFadeOut(true);
-      setShowWelcome(false);
+
+      if (showWelcome) {
+        setFadeOut(true);
+        setShowWelcome(false);
+      }
+
+      // Сброс высоты  textarea
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "40px";
+      }
     }
   };
   console.log(messages, "messages");
@@ -175,12 +187,14 @@ function App() {
         </div>
         <div className="input">
           <div className="inputContainer">
-            <input
+            <textarea
               className="inputText"
               value={inputText}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               placeholder={translations[language].messagePlaceholder}
+              ref={textareaRef}
+              rows="1"
             />
           </div>
           {inputText.trim() === "" ? (
