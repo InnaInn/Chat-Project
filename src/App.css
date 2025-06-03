@@ -1,6 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
+:root {
+  --light: #d8dbe0;
+  --dark: #28292c;
+
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -210,9 +216,6 @@ h6 {
 .msg.my-msg {
   margin-left: auto;
   max-width: 70%;
-
-
-
 }
 
 .my-msg {
@@ -246,9 +249,7 @@ ol {
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
   z-index: 1000;
   min-height: 80px;
-  /* Минимальная, но не фиксированная высота */
   height: auto;
-  /* Позволяет контейнеру расширяться */
 }
 
 .inputText {
@@ -266,7 +267,7 @@ ol {
   resize: none;
   overflow-y: auto;
   max-height: 200px;
-  }
+}
 
 .inputText::placeholder {
   color: #CCCCCC;
@@ -283,15 +284,26 @@ ol {
   cursor: pointer;
 }
 
+.voiceContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
 .recordingIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 10px;
   height: 10px;
   background-color: red;
   border-radius: 50%;
-  display: inline-block;
   animation: blink 1s infinite;
-  margin-right: 10px;
 }
+
 
 @keyframes blink {
   0% {
@@ -309,9 +321,10 @@ ol {
 
 .header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  /* Распределяем элементы по краям */
   align-items: center;
-  padding: 15px 20px;
+  padding: 10px 20px;
   background-color: #282c34;
   position: fixed;
   width: 100%;
@@ -340,4 +353,55 @@ ol {
 .languageButton img {
   width: 16px;
   height: 16px;
+}
+
+.toggleSwitch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+label {
+  position: absolute;
+  background-color: #28292c;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+input {
+  position: absolute;
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+input:checked~.slider {
+  background-color: #d8dbe0;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  background-color: #28292c;
+  transition: 0.3s;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 8px -2px 0px 0px #d8dbe0;
+}
+
+input:checked~.slider::before {
+  background-color: #28292c;
+  box-shadow: none;
+  transform: translateX(30px);
 }

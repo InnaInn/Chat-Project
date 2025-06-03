@@ -168,9 +168,17 @@ function App() {
   return (
     <>
       <header className="header">
-        <button className="languageButton" onClick={toggleLanguage}>
-          {translations[language].changeLanguage}
-        </button>
+        <div className='toggleSwitch'>
+          <label>
+            <input type='checkbox' />
+            <span className='slider'></span>
+          </label>
+        </div>
+        <div>
+          <button className="languageButton" onClick={toggleLanguage}>
+            {translations[language].changeLanguage}
+          </button>
+        </div>
       </header>
       <div className="wrapper">
         <div className="msgWrapper" ref={msgWrapperRef}>
