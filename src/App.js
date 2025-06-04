@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Send from "./img/send.svg";
 import Voice from "./img/voice.svg";
+import * as signalR from "@microsoft/signalr";
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -16,34 +17,57 @@ function App() {
   const msgWrapperRef = useRef(null);
   const textareaRef = useRef(null);
 
-  /*Подключение к WebSocket*/
+  /*Подключение к SignalR*/
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const generatedUserId = Math.random().toString(36).substring(7);
+    setUserId(generatedUserId);
 
-    ws.onopen = () => {
-      console.log(" WebSocket подключён!");
-      setSocket(ws);
-    };
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:5000/chatHub")
+      .withAutomaticReconnect()
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
 
-    ws.onerror = (event) => {
-      console.error("WebSocket ошибка:", event);
-    };
+    connection.start()
+      .then(() => console.log("SignalR подключён!"))
+      .catch(err => console.error("Ошибка подключения SignalR:", err));
 
-    ws.onclose = (event) => {
-      console.warn("WebSocket закрыт! Код:", event.code, "Причина:", event.reason);
-    };
+    connection.on("ReceiveMessage", (user, message) => {
+      setMessages(prev => [...prev, { text: message, userId: user }]);
+    });
+    setSocket(connection);
 
-    ws.onmessage = (event) => {
-      console.log("Received message:", event);
-      let messageText = JSON.parse(event.data).text;
-
-      setMessages((prev) => [...prev, { text: messageText, userId: "server" }]);
-    };
-
-
-    return () => ws.close();
+    return () => connection.stop();
   }, []);
+
+  /*Отправка сообщений*/
+
+  const sendMessage = () => {
+    console.log("Статус соединения:", socket?.state);
+
+    if (!socket || socket.state !== signalR.HubConnectionState.Connected) {
+      console.error("SignalR ещё не подключён, попробуйте снова");
+      return;
+    }
+
+    socket.invoke("SendMessage", userId, inputText)
+      .catch(err => console.error("Ошибка при отправке:", err));
+    setMessages(prev => [...prev, { text: inputText, userId }]);
+    setInputText("");
+
+    if (showWelcome) {
+      setFadeOut(true);
+      setShowWelcome(false);
+    }
+
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "40px";
+    }
+  };
+  console.log(messages, "messages");
+
 
   /*Язык*/
 
@@ -102,32 +126,6 @@ function App() {
     }
   }, [messages]);
 
-  /*Отправка сообщений*/
-
-  const sendMessage = () => {
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      console.error("WebSocket ещё не готов, попробуйте снова");
-      return;
-    }
-
-    if (inputText.trim() !== "") {
-      const newMessage = { text: inputText, userId };
-      setMessages((prev) => [...prev, newMessage]);
-      socket.send(JSON.stringify(newMessage));
-      setInputText("");
-
-      if (showWelcome) {
-        setFadeOut(true);
-        setShowWelcome(false);
-      }
-
-      // Сброс высоты  textarea
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "40px";
-      }
-    }
-  };
-  console.log(messages, "messages");
 
   /*Отправка на Enter*/
 
