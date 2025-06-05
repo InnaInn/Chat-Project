@@ -17,6 +17,18 @@ function App() {
   const msgWrapperRef = useRef(null);
   const textareaRef = useRef(null);
 
+  /*Переподключение через 3 сек , сели сервер не запущен*/
+
+  const startConnection = async (connection) => {
+    try {
+      await connection.start();
+      console.log("SignalR подключён!");
+    } catch (err) {
+      console.error("Ошибка подключения SignalR:", err);
+      setTimeout(() => startConnection(connection), 3000);
+    }
+  };
+
   /*Подключение к SignalR*/
 
   useEffect(() => {
@@ -24,21 +36,24 @@ function App() {
     setUserId(generatedUserId);
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5000/chatHub")
+      .withUrl("http://localhost:8080/chatHub", { withCredentials: false })
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    connection.start()
-      .then(() => console.log("SignalR подключён!"))
-      .catch(err => console.error("Ошибка подключения SignalR:", err));
+    startConnection(connection);
 
+    connection.off("ReceiveMessage");
     connection.on("ReceiveMessage", (user, message) => {
       setMessages(prev => [...prev, { text: message, userId: user }]);
     });
+
     setSocket(connection);
 
-    return () => connection.stop();
+    return () => {
+      connection.off("ReceiveMessage");
+      connection.stop();
+    };
   }, []);
 
   /*Отправка сообщений*/
