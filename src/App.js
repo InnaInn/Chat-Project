@@ -32,9 +32,6 @@ function App() {
   /*Подключение к SignalR*/
 
   useEffect(() => {
-    const generatedUserId = Math.random().toString(36).substring(7);
-    setUserId(generatedUserId);
-
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("http://localhost:8080/chatHub", { withCredentials: false })
       .withAutomaticReconnect()
@@ -43,15 +40,30 @@ function App() {
 
     startConnection(connection);
 
-    connection.off("ReceiveMessage");
-    connection.on("ReceiveMessage", (user, message) => {
-      setMessages(prev => [...prev, { text: message, userId: user }]);
+    connection.off("ReceiveStreamMessage");
+    connection.on("ReceiveStreamMessage", (user, chunk) => {
+      setMessages(prev => {
+        let lastMessage = null;
+
+        if (prev.length > 0) {
+          lastMessage = prev[prev.length - 1];
+        }
+
+        if (lastMessage && lastMessage.userId === "server") {
+          return [
+            ...prev.slice(0, -1),
+            { text: lastMessage.text + chunk, userId: "server" }
+          ];
+        } else {
+          return [...prev, { text: chunk, userId: "server" }];
+        }
+      });
     });
 
     setSocket(connection);
 
     return () => {
-      connection.off("ReceiveMessage");
+      connection.off("ReceiveStreamMessage");
       connection.stop();
     };
   }, []);
@@ -59,16 +71,15 @@ function App() {
   /*Отправка сообщений*/
 
   const sendMessage = () => {
-    console.log("Статус соединения:", socket?.state);
-
     if (!socket || socket.state !== signalR.HubConnectionState.Connected) {
       console.error("SignalR ещё не подключён, попробуйте снова");
       return;
     }
-
-    socket.invoke("SendMessage", userId, inputText)
+    socket.invoke("StreamMessage", userId, inputText)
       .catch(err => console.error("Ошибка при отправке:", err));
+
     setMessages(prev => [...prev, { text: inputText, userId }]);
+
     setInputText("");
 
     if (showWelcome) {
