@@ -174,7 +174,7 @@ h6 {
   text-align: center;
 }
 
-.hi{
+.hi {
   margin-bottom: 100px;
 }
 
@@ -218,7 +218,7 @@ h6 {
 
 .msg.my-msg {
   margin-left: auto;
-  
+
 }
 
 .my-msg {
@@ -370,7 +370,7 @@ label {
   cursor: pointer;
 }
 
-input {
+.checkboxTheme {
   position: absolute;
   display: none;
 }
@@ -404,4 +404,32 @@ input:checked~.slider::before {
   background-color: #28292c;
   box-shadow: none;
   transform: translateX(30px);
+}
+
+
+.gameInput {
+  background: linear-gradient(180deg, #393c63, #505375);
+  color: #fff;
+  border: 1px solid #3f3f5a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 300px;
+  transition: border 0.2s ease, box-shadow 0.2s
+}
+
+.gameInput::placeholder {
+  color: #CCCCCC;
+  opacity: 1;
+}
+
+.gameInput:focus {
+  border-color: #ffcc00;
+  outline: none;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }

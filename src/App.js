@@ -16,6 +16,7 @@ function App() {
   const [language, setLanguage] = useState("en");
   const msgWrapperRef = useRef(null);
   const textareaRef = useRef(null);
+  const endMsgTag = '<|im_end|>';
 
   /*Переподключение через 3 сек , сели сервер не запущен*/
 
@@ -42,6 +43,10 @@ function App() {
 
     connection.off("ReceiveStreamMessage");
     connection.on("ReceiveStreamMessage", (user, chunk) => {
+      if (chunk.endsWith(endMsgTag)) {
+
+        chunk = chunk.slice(0, -endMsgTag.length);
+      }
       setMessages(prev => {
         let lastMessage = null;
 
@@ -75,6 +80,7 @@ function App() {
       console.error("SignalR ещё не подключён, попробуйте снова");
       return;
     }
+    let gameName = '';
     socket.invoke("StreamMessage", userId, inputText)
       .catch(err => console.error("Ошибка при отправке:", err));
 
@@ -104,6 +110,8 @@ function App() {
       changeLanguage: "Сменить язык",
       send: "Отправить",
       startVoice: "Голосовой ввод",
+      gamePlaceholder: "Выберите игру или начните ввод...",
+      gameOptions: ["Древний Ужас", "Колонизаторы", "Root", "Это моя война", "Эволюция"],
     },
     en: {
       welcome: "Hey there 👋! Start chatting right now!",
@@ -111,6 +119,10 @@ function App() {
       changeLanguage: "Change language",
       send: "Send",
       startVoice: "Voice Input",
+      gamePlaceholder: "Choose a game or start typing...",
+      gameOptions: ["Eldritch Horror", "Catan", "Root", "This War of Mine", "Evolution"],
+
+
     },
   };
 
@@ -192,11 +204,25 @@ function App() {
   return (
     <>
       <header className="header">
-        <div className='toggleSwitch'>
-          <label>
-            <input type='checkbox' />
-            <span className='slider'></span>
-          </label>
+        <div className="leftSection">
+          <div className='toggleSwitch'>
+            <label>
+              <input className="checkboxTheme" type='checkbox' />
+              <span className='slider'></span>
+            </label>
+          </div>
+          <div className="gameList">
+            <input
+              className="gameInput"
+              list="gameList"
+              placeholder={translations[language].gamePlaceholder}
+            />
+            <datalist id="gameList">
+              {translations[language].gameOptions.map((title, index) => (
+                <option key={index} value={title}></option>
+              ))}
+            </datalist>
+          </div>
         </div>
         <div>
           <button className="languageButton" onClick={toggleLanguage}>
