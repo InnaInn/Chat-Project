@@ -5,6 +5,7 @@ import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
 import { useSignalR } from "./hooks/useSignalR";
 import translations from "./locales/translations";
+import { useVoiceRecognition } from "./hooks/useVoiceRecognition";
 import "./App.css";
 
 function App() {
@@ -49,9 +50,9 @@ function App() {
     setMessages((prev) => [...prev, { text: inputText, userId }]);
     setInputText("");
 
-  if (textareaRef.current) {
-  textareaRef.current.style.height = "40px"; 
-}
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "40px";
+    }
 
     if (showWelcome) {
       setFadeOut(true);
@@ -59,25 +60,12 @@ function App() {
     }
   };
 
-  const startVoiceRecognition = () => {
-    const recognition = new (window.SpeechRecognition ||
-      window.webkitSpeechRecognition)();
-    recognition.lang = language === "ru" ? "ru-RU" : "en-US";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    setIsRecording(true);
-
-    recognition.onresult = (event) => {
-      const speechText = event.results[0][0].transcript;
-      setInputText(speechText);
-      setIsRecording(false);
-    };
-
-    recognition.onerror = () => setIsRecording(false);
-    recognition.onend = () => setIsRecording(false);
-    recognition.start();
-  };
+  const { startRecognition } = useVoiceRecognition(
+    isRecording,
+    setIsRecording,
+    language,
+    setInputText
+  );
 
   return (
     <>
@@ -101,11 +89,11 @@ function App() {
           isRecording={isRecording}
           handleKeyDown={handleKeyDown}
           handleChange={handleChange}
-          startVoiceRecognition={startVoiceRecognition}
+          startVoiceRecognition={startRecognition}
           sendMessage={sendMessage}
           translations={translations}
           language={language}
-          textareaRef={textareaRef} 
+          textareaRef={textareaRef}
         />
       </div>
     </>
