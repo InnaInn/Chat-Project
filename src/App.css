@@ -433,3 +433,27 @@ input:checked~.slider::before {
   align-items: center;
   gap: 16px;
 }
+
+.dropdownList {
+  margin-top: 4px;
+  background: #2e2f48;
+  border: 1px solid #3f3f5a;
+  border-radius: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 4px 0;
+  position: absolute;
+  width: 300px;
+  z-index: 10;
+}
+
+.dropdownItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.dropdownItem:hover {
+  background-color: #505375;
+}

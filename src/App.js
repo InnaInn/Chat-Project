@@ -50,7 +50,7 @@ function App() {
     setInputText("");
 
   if (textareaRef.current) {
-  textareaRef.current.style.height = "40px"; // ⬅️ ключевой момент
+  textareaRef.current.style.height = "40px"; 
 }
 
     if (showWelcome) {
