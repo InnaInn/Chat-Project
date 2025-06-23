@@ -17,10 +17,9 @@ function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [language, setLanguage] = useState("en");
   const textareaRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-
-
-  const socket = useSignalR(setMessages, userId);
+  const socket = useSignalR(setMessages, userId, setIsLoading);
 
   const toggleLanguage = () => {
     setLanguage((prevLang) => (prevLang === "ru" ? "en" : "ru"));
@@ -42,6 +41,8 @@ function App() {
       console.error("SignalR ещё не подключён, попробуйте снова");
       return;
     }
+
+    setIsLoading(true);
 
     socket.invoke("StreamMessage", userId, inputText).catch((err) =>
       console.error("Ошибка при отправке:", err)
@@ -82,6 +83,9 @@ function App() {
           showWelcome={showWelcome}
           fadeOut={fadeOut}
           welcomeText={translations[language].welcome}
+          isLoading={isLoading}
+          language={language}
+          translations={translations}
         />
         <MessageInput
           inputText={inputText}

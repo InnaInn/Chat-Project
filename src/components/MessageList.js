@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
+import ReactMarkdown from 'react-markdown';
+import Load from "../img/loading.svg";
 
-function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText }) {
+function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations }) {
   const msgWrapperRef = useRef(null);
 
   useEffect(() => {
@@ -30,9 +32,19 @@ function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText }) {
       )}
       {messages.map((msg, index) => (
         <div key={index} className={`msg ${msg.userId === userId ? "my-msg" : ""}`}>
-          {msg.text}
+          {msg.userId === "server" ? (
+            <ReactMarkdown>{msg.text}</ReactMarkdown>
+          ) : (
+            msg.text
+          )}
         </div>
       ))}
+      {isLoading && (
+        <div className="spinner">
+          <img src={Load} alt="loading" />
+          {translations[language].loading}
+        </div>
+      )}
     </div>
   );
 }

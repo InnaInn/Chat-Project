@@ -3,7 +3,7 @@ import * as signalR from "@microsoft/signalr";
 
 const endMsgTag = '<|im_end|>';
 
-export function useSignalR(setMessages, userId) {
+export function useSignalR(setMessages, userId, setIsLoading) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -27,7 +27,9 @@ export function useSignalR(setMessages, userId) {
     connection.on("ReceiveStreamMessage", (user, chunk) => {
       if (chunk.endsWith(endMsgTag)) {
         chunk = chunk.slice(0, -endMsgTag.length);
+
       }
+      setIsLoading(false);
 
       setMessages(prev => {
         let lastMessage = null;

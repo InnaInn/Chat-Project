@@ -12,7 +12,7 @@ function MessageInput({
   sendMessage,
   translations,
   language,
-  textareaRef={textareaRef},
+  textareaRef = { textareaRef },
 }) {
 
   return (

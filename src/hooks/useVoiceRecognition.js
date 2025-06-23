@@ -15,6 +15,11 @@ export const useVoiceRecognition = (isRecording, setIsRecording, language, setIn
         }
     }, [transcript, listening]);
 
+    useEffect(() => {
+        setIsRecording(listening);
+    }, [listening]);
+
+
     const startRecognition = () => {
         if (!browserSupportsSpeechRecognition) {
             alert(translations[language].noSupport);

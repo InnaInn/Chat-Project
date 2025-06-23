@@ -191,17 +191,22 @@ h6 {
   }
 }
 
-
 .msg {
   color: #ffffff;
   padding: 10px 12px;
   display: inline-block;
   margin-bottom: 10px;
-  max-width: 70%;
+  max-width: 80%;
   background: linear-gradient(180deg, #393c63, #505375);
   border-radius: 8px;
-  max-width: 100%;
   width: max-content;
+  line-height: 1.6;
+  text-align: justify;
+
+}
+
+.msg p {
+  text-indent: 1.5em;
 }
 
 .msgWrapper {
@@ -228,6 +233,8 @@ h6 {
   width: max-content;
   max-width: 70%;
   margin-bottom: 10px;
+  line-height: 1.6;
+
 }
 
 ol {
@@ -456,4 +463,34 @@ input:checked~.slider::before {
 
 .dropdownItem:hover {
   background-color: #505375;
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  margin: 8px 0 0 12px;
+  font-size: 14px;
+  color: #CCCCCC;
+  font-style: italic;
+  gap: 8px;
+
+}
+
+.spinner img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  animation: spin 1s linear infinite;
+  transform-origin: center;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
