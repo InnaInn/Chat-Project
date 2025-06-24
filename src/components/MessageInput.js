@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
-import Voice from "../img/voice.svg";
-import Send from "../img/send.svg";
+import VoiceDark from "../img/voice_dark.svg";
+import SendDark from "../img/send_dark.svg";
+import VoiceLight from "../img/voice_light.svg";
+import SendLight from "../img/send_light.svg";
 
 function MessageInput({
   inputText,
@@ -13,7 +15,9 @@ function MessageInput({
   translations,
   language,
   textareaRef = { textareaRef },
+  isLightTheme,
 }) {
+
 
   return (
     <div className="input">
@@ -42,7 +46,7 @@ function MessageInput({
           {isRecording && <span className="recordingIndicator"></span>}
           <img
             className="voice"
-            src={Voice}
+            src={isLightTheme ? VoiceLight : VoiceDark}
             alt={translations[language].startVoice}
             onClick={startVoiceRecognition}
           />
@@ -50,9 +54,9 @@ function MessageInput({
       ) : (
         <img
           className="send"
-          onClick={sendMessage}
-          src={Send}
+          src={isLightTheme ? SendLight : SendDark}
           alt={translations[language].send}
+          onClick={sendMessage}
         />
       )}
     </div>

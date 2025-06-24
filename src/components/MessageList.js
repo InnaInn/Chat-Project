@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
-import Load from "../img/loading.svg";
+import LoadDark from "../img/loading_dark.svg";
+import LoadLight from "../img/loading_light.svg";
 
-function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations }) {
+function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations, isLightTheme }) {
   const msgWrapperRef = useRef(null);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLo
       ))}
       {isLoading && (
         <div className="spinner">
-          <img src={Load} alt="loading" />
+          <img src={isLightTheme ? LoadLight : LoadDark} alt="loading" />
           {translations[language].loading}
         </div>
       )}

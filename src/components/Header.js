@@ -1,14 +1,19 @@
 import React from "react";
 import GameSelector from "./GameSelector";
 
-function Header({ language, toggleLanguage, translations }) {
+function Header({ language, toggleLanguage, translations, onToggleTheme, isLightTheme }) {
   return (
     <header className="header">
       <div className="leftSection">
-        <div className='toggleSwitch'>
+        <div className="toggleSwitch">
           <label>
-            <input className="checkboxTheme" type='checkbox' />
-            <span className='slider'></span>
+            <input
+              className="checkboxTheme"
+              type="checkbox"
+              checked={isLightTheme}
+              onChange={onToggleTheme}
+            />
+            <span className="slider"></span>
           </label>
         </div>
         <GameSelector language={language} translations={translations} />

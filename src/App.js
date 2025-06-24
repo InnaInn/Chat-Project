@@ -1,5 +1,4 @@
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
@@ -23,6 +22,19 @@ function App() {
 
   const toggleLanguage = () => {
     setLanguage((prevLang) => (prevLang === "ru" ? "en" : "ru"));
+  };
+
+  const [isLightTheme, setIsLightTheme] = useState(() => {
+    return localStorage.getItem("theme") === "light";
+  });
+
+  useEffect(() => {
+    document.body.classList.toggle("light-theme", isLightTheme);
+    localStorage.setItem("theme", isLightTheme ? "light" : "dark");
+  }, [isLightTheme]);
+
+  const handleThemeToggle = (e) => {
+    setIsLightTheme(e.target.checked);
   };
 
   const handleChange = (e) => {
@@ -74,6 +86,8 @@ function App() {
         language={language}
         toggleLanguage={toggleLanguage}
         translations={translations}
+        isLightTheme={isLightTheme}
+        onToggleTheme={handleThemeToggle}
       />
 
       <div className="wrapper">
@@ -86,6 +100,7 @@ function App() {
           isLoading={isLoading}
           language={language}
           translations={translations}
+          isLightTheme={isLightTheme}
         />
         <MessageInput
           inputText={inputText}
@@ -98,6 +113,7 @@ function App() {
           translations={translations}
           language={language}
           textareaRef={textareaRef}
+          isLightTheme={isLightTheme}
         />
       </div>
     </>

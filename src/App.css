@@ -1,6 +1,45 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
+:root {
+  --bg-color: linear-gradient(135deg, #1e1f3a, #3c3f5a);
+  --text-color: #ffffff;
+  --input-bg: linear-gradient(135deg, #3c3f5a, #25273e);
+  --bubble-bg: linear-gradient(180deg, #393c63, #505375);
+  --border-color: #3f3f5a;
+  --scroll-thumb: linear-gradient(135deg, #25273e, #3c3f5a);
+  --scroll-thumb-hover: linear-gradient(135deg, #32344d, #464866);
+  --placeholder-color: #CCCCCC;
+  --header-bg: #282c34;
+  --toggle-track: #505375;
+  --toggle-thumb: #d8dbe0;
+  --language-btn-bg: #ffcc00;
+  --language-btn-color: #333;
+  --language-btn-hover: #ff9900;
+  --bg-gameInput: linear-gradient(180deg, #393c63, #505375);
+  --gameInput-hover: #505375;
+}
+
+body.light-theme {
+  --bg-color: #f8f4f2;
+  --text-color: #000000;
+  --input-bg: rgba(255, 255, 255);
+  --bubble-bg: rgba(255, 255, 255);
+  --border-color: #ccd6e0;
+  --scroll-thumb: #c1ccd9;
+  --scroll-thumb-hover: #9aa7b8;
+  --placeholder-color: #7c8591;
+  --header-bg: #eeeae7;
+  --toggle-track: #c1ccd9;
+  --toggle-thumb: #5f8fff;
+  --language-btn-bg: #5f8fff;
+  --language-btn-color: #ffffff;
+  --language-btn-hover: #376fd6;
+  --bg-gameInput: rgba(255, 255, 255, 0.9);
+  --gameInput-hover: rgba(230, 230, 230, 0.9);
+
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -37,7 +76,7 @@ html,
 body {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #1e1f3a, #3c3f5a);
+  background: var(--bg-color);
   overflow-y: auto;
   min-height: 100vh;
 }
@@ -48,10 +87,11 @@ body::after {
   bottom: 0;
   width: 100%;
   height: 50px;
-  background: #282c34;
-
+  background: var(--header-bg);
   pointer-events: none;
 }
+
+
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -62,12 +102,12 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #25273e, #3c3f5a);
+  background: var(--scroll-thumb);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #32344d, #464866);
+  background: var(--scroll-thumb-hover);
 }
 
 input,
@@ -158,18 +198,18 @@ h6 {
   font-weight: 400;
   line-height: 22.13px;
   text-align: left;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .header {
-  color: #fff;
+  color: var(--text-color);
 }
 
 .welcome {
   opacity: 0;
   transform: translateX(-50px);
   animation: slideIn 1.5s ease-in-out forwards;
-  color: #ffffff;
+  color: var(--text-color);
   font-size: 24px;
   text-align: center;
 }
@@ -192,12 +232,12 @@ h6 {
 }
 
 .msg {
-  color: #ffffff;
   padding: 10px 12px;
   display: inline-block;
   margin-bottom: 10px;
   max-width: 80%;
-  background: linear-gradient(180deg, #393c63, #505375);
+  background: var(--bubble-bg);
+  color: var(--text-color);
   border-radius: 8px;
   width: max-content;
   line-height: 1.6;
@@ -227,7 +267,7 @@ h6 {
 }
 
 .my-msg {
-  color: #ffffff;
+  color: var(--text-color);
   padding: 10px 12px;
   display: inline-block;
   width: max-content;
@@ -252,7 +292,7 @@ ol {
   width: 900px;
   max-width: 1000px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #3c3f5a, #25273e);
+  background: var(--input-bg);
   padding: 10px;
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
   z-index: 1000;
@@ -263,7 +303,7 @@ ol {
 .inputText {
   width: 100%;
   background: transparent;
-  color: #fff;
+  color: var(--text-color);
   border: none;
   outline: none;
   padding: 10px;
@@ -278,7 +318,7 @@ ol {
 }
 
 .inputText::placeholder {
-  color: #CCCCCC;
+  color: var(--placeholder-color);
 }
 
 .inputContainer {
@@ -332,16 +372,16 @@ ol {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #282c34;
+  background-color: var(--header-bg);
   position: fixed;
   width: 100%;
   z-index: 1000;
 }
 
 .languageButton {
-  background-color: #ffcc00;
+  background-color: var(--language-btn-bg);
   border: none;
-  color: #333;
+  color: var(--language-btn-color);
   padding: 8px 12px;
   font-size: 14px;
   font-weight: bold;
@@ -354,7 +394,7 @@ ol {
 }
 
 .languageButton:hover {
-  background-color: #ff9900;
+  background-color: var(--language-btn-hover);
 }
 
 .languageButton img {
@@ -370,7 +410,7 @@ ol {
 
 label {
   position: absolute;
-  background-color: #28292c;
+  background-color: var(--toggle-track);
   width: 100%;
   height: 100%;
   border-radius: 15px;
@@ -397,7 +437,7 @@ input:checked~.slider {
 .slider::before {
   content: "";
   position: absolute;
-  background-color: #28292c;
+  background-color: #505375;
   transition: 0.3s;
   top: 5px;
   left: 5px;
@@ -408,16 +448,16 @@ input:checked~.slider {
 }
 
 input:checked~.slider::before {
-  background-color: #28292c;
+  background-color: var(--toggle-thumb);
   box-shadow: none;
   transform: translateX(30px);
 }
 
 
 .gameInput {
-  background: linear-gradient(180deg, #393c63, #505375);
-  color: #fff;
-  border: 1px solid #3f3f5a;
+  background: var(--bg-gameInput);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 14px;
@@ -426,12 +466,12 @@ input:checked~.slider::before {
 }
 
 .gameInput::placeholder {
-  color: #CCCCCC;
+  color: var(--placeholder-color);
   opacity: 1;
 }
 
 .gameInput:focus {
-  border-color: #ffcc00;
+  border-color: var(--language-btn-bg);
   outline: none;
 }
 
@@ -443,8 +483,8 @@ input:checked~.slider::before {
 
 .dropdownList {
   margin-top: 4px;
-  background: #2e2f48;
-  border: 1px solid #3f3f5a;
+  background: var(--bubble-bg);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   max-height: 150px;
   overflow-y: auto;
@@ -458,11 +498,11 @@ input:checked~.slider::before {
 .dropdownItem {
   padding: 8px 12px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .dropdownItem:hover {
-  background-color: #505375;
+  background-color: var(--gameInput-hover);
 }
 
 .spinner {
@@ -470,7 +510,7 @@ input:checked~.slider::before {
   align-items: center;
   margin: 8px 0 0 12px;
   font-size: 14px;
-  color: #CCCCCC;
+  color: var(--placeholder-color);
   font-style: italic;
   gap: 8px;
 
