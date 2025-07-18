@@ -18,6 +18,7 @@
   --language-btn-hover: #ff9900;
   --bg-gameInput: linear-gradient(180deg, #393c63, #505375);
   --gameInput-hover: #505375;
+  --background-drop-down-burger: #1f1f2e;
 }
 
 body.light-theme {
@@ -37,6 +38,7 @@ body.light-theme {
   --language-btn-hover: #376fd6;
   --bg-gameInput: rgba(255, 255, 255, 0.9);
   --gameInput-hover: rgba(230, 230, 230, 0.9);
+  --background-drop-down-burger: #ffffff;
 
 }
 
@@ -542,11 +544,12 @@ input:checked~.slider::before {
 
   .input {
     width: 95%;
-    padding: 10px;
-    gap: 10px;
-    min-height: auto;
     bottom: 15px;
+    padding: 8px;
+    min-height: 70px;
+    gap: 8px;
   }
+
 
   .inputText {
     font-size: 15px;
@@ -554,107 +557,156 @@ input:checked~.slider::before {
     max-height: 150px;
   }
 
-  .send,
-  .voice {
-    width: 28px;
-    height: 28px;
+  .gameInput {
+    width: 130%;
+    font-size: 14px;
+  }
+
+  .gameList {
+    position: relative;
+  }
+
+  .dropdownList {
+    width: 130%;
+    position: absolute;
+  }
+
+  .languageButton {
+    padding: 6px 10px;
+    font-size: 13px;
+    width: fit-content;
   }
 
   .header {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 10px;
     padding: 10px;
   }
 
-  .languageButton {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
 
-  .gameInput,
-  .dropdownList {
-    width: 100%;
-  }
-
-  .msg,
-  .my-msg {
-    font-size: 15px;
-    padding: 8px 10px;
-    max-width: 90%;
-  }
 
   .welcome {
     font-size: 20px;
-    padding: 0 10px;
   }
 
-  .voiceContainer {
-    width: 36px;
-    height: 36px;
+  .textHeader {
+    font-size: 15px;
   }
 
-  .recordingIndicator {
-    width: 8px;
-    height: 8px;
-  }
-
-  .spinner {
-    font-size: 13px;
-    margin-left: 0;
-  }
-
-  .spinner img {
-    width: 22px;
-    height: 22px;
-  }
 }
 
 @media all and (min-width: 767px) and (max-width: 1279px) {
   .wrapper {
-    padding: 70px 20px 120px;
+    padding: 70px 20px 110px;
   }
 
   .input {
     width: 90%;
-    padding: 12px;
-    bottom: 20px;
+    bottom: 18px;
+    padding: 10px;
+    min-height: 75px;
   }
 
   .inputText {
     font-size: 16px;
-    padding: 10px;
+    max-height: 180px;
   }
 
-  .send,
-  .voice {
-    width: 30px;
-    height: 30px;
+  .gameInput {
+    width: 130%;
+    font-size: 14px;
   }
 
-  .msg,
-  .my-msg {
-    font-size: 16px;
-    max-width: 85%;
+  .gameList {
+    position: relative;
+  }
+
+  .dropdownList {
+    width: 130%;
+    position: absolute;
   }
 
   .languageButton {
+    padding: 7px 11px;
     font-size: 14px;
-    padding: 8px 12px;
   }
 
-  .gameInput,
-  .dropdownList {
-    width: 90%;
+  .header {
+    padding: 10px 16px;
   }
 
   .welcome {
     font-size: 22px;
   }
 
-  .spinner img {
-    width: 24px;
-    height: 24px;
+  .textHeader {
+    font-size: 16px;
   }
 }
 
+.desktopOnly {
+  display: none;
+}
+
+.mobileOnly {
+  display: block;
+}
+
+
+.burgerIcon {
+  cursor: pointer;
+  padding: 10px;
+  z-index: 2000;
+  width: 55px;
+
+}
+
+.burgerIcon img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.burgerIcon.menuOpen img {
+  transform: rotate(90deg) scale(1.1);
+}
+
+.burgerIcon:active img {
+  transform: scale(0.95);
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--header-bg);
+  color: #f0f0f0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  padding: 35px;
+  z-index: 1000;
+  display: flex;
+  gap: 12px;
+  min-width: 180px;
+  width: 100%;
+  animation: slideFadeIn 0.3s ease forwards;
+}
+
+@keyframes slideFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .desktopOnly {
+    display: block;
+  }
+
+  .mobileOnly,
+  .mobileMenu {
+    display: none;
+  }
+}
