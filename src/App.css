@@ -164,7 +164,7 @@ h6 {
 }
 
 .wrapper {
-  max-width: 940px;
+  max-width: 930px;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -302,6 +302,51 @@ ol {
   height: auto;
 }
 
+.popup {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 20px 30px;
+  border-radius: 10px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.popupContent {
+  position: relative;
+  font-size: 16px;
+  color: #333;
+}
+
+.closeBtn {
+  position: absolute;
+  top: -18px;
+  right: -26px;
+  background: #4A90E2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 .inputText {
   width: 100%;
   background: transparent;
@@ -317,6 +362,31 @@ ol {
   resize: none;
   overflow-y: auto;
   max-height: 200px;
+}
+
+.detailsBlock {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+
+.details {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+  color: var(--placeholder-color);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detailsIcon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
 }
 
 .inputText::placeholder {
@@ -527,6 +597,11 @@ input:checked~.slider::before {
   flex-shrink: 0;
 }
 
+.details {
+  background: none;
+  border: none;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -539,7 +614,11 @@ input:checked~.slider::before {
 
 @media all and (min-width: 319px) and (max-width: 767px) {
   .wrapper {
-    padding: 60px 10px 100px;
+    padding: 105px 10px 100px;
+  }
+
+  .msg {
+    max-width: 90%;
   }
 
   .input {
@@ -581,8 +660,6 @@ input:checked~.slider::before {
     gap: 10px;
     padding: 10px;
   }
-
-
 
   .welcome {
     font-size: 20px;

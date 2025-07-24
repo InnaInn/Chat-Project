@@ -8,7 +8,7 @@ export function useSignalR(setMessages, userId, setIsLoading) {
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:8080/chatHub", { withCredentials: false })
+      .withUrl("http://192.168.0.169:8080/chatHub", { withCredentials: false })
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
       .build();
@@ -25,26 +25,24 @@ export function useSignalR(setMessages, userId, setIsLoading) {
 
     connection.off("ReceiveStreamMessage");
     connection.on("ReceiveStreamMessage", (user, chunk) => {
-      if (chunk.endsWith(endMsgTag)) {
+      const isFinal = chunk.endsWith(endMsgTag);
+      if (isFinal) {
         chunk = chunk.slice(0, -endMsgTag.length);
-
       }
+
       setIsLoading(false);
 
       setMessages(prev => {
-        let lastMessage = null;
-
-        if (prev.length > 0) {
-          lastMessage = prev[prev.length - 1];
-        }
-
+        const lastMessage = prev[prev.length - 1];
         if (lastMessage && lastMessage.userId === "server") {
-          return [
-            ...prev.slice(0, -1),
-            { text: lastMessage.text + chunk, userId: "server" }
-          ];
+          const updated = {
+            ...lastMessage,
+            text: lastMessage.text + chunk,
+            done: isFinal
+          };
+          return [...prev.slice(0, -1), updated];
         } else {
-          return [...prev, { text: chunk, userId: "server" }];
+          return [...prev, { text: chunk, userId: "server", done: isFinal }];
         }
       });
     });

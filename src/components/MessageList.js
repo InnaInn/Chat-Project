@@ -1,10 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import LoadDark from "../img/loading_dark.svg";
 import LoadLight from "../img/loading_light.svg";
+import DetailesLight from "../img/details_light.svg";
+import DetailesDark from "../img/details_dark.svg";
+import DetailesIcon from "../img/details_icon.svg";
 
 function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations, isLightTheme }) {
   const msgWrapperRef = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
+
 
   useEffect(() => {
     const container = msgWrapperRef.current;
@@ -16,12 +21,16 @@ function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLo
       container.style.overflowY = "hidden";
     }
 
-    const lastMessage = container.lastElementChild;
-    if (lastMessage) {
-      setTimeout(() => {
+    const observer = new MutationObserver(() => {
+      const lastMessage = container.lastElementChild;
+      if (lastMessage) {
         lastMessage.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-    }
+      }
+    });
+
+    observer.observe(container, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
   }, [messages]);
 
   return (
@@ -31,15 +40,40 @@ function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLo
           <h2 className="hi">{welcomeText}</h2>
         </div>
       )}
-      {messages.map((msg, index) => (
-        <div key={index} className={`msg ${msg.userId === userId ? "my-msg" : ""}`}>
-          {msg.userId === "server" ? (
-            <ReactMarkdown>{msg.text}</ReactMarkdown>
-          ) : (
-            msg.text
-          )}
-        </div>
-      ))}
+      {messages.map((msg, index) => {
+        const isLastMessage = index === messages.length - 1;
+        const isServerMessage = msg.userId === "server";
+
+        return (
+          <div key={index} className={`msg ${msg.userId === userId ? "my-msg" : ""}`}>
+            {isServerMessage ? (
+              <>
+                <ReactMarkdown>{msg.text}</ReactMarkdown>
+
+                { }
+                {msg.done && isLastMessage && (
+                  <div className="detailsBlock">
+                    <button className="details" onClick={() => setShowPopup(true)}>
+                      <img src={DetailesIcon} alt="" className="detailsIcon" />
+                    </button>
+
+                    {showPopup && (
+                      <div className="popup">
+                        <div className="popupContent">
+                          <p>Здесь должен быть какой- то текст! Здесь должен быть какой- то текст! Здесь должен быть какой- то текст! Здесь должен быть какой- то текст!Здесь должен быть какой- то текст!</p>
+                          <button className="closeBtn" onClick={() => setShowPopup(false)}></button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              msg.text
+            )}
+          </div>
+        );
+      })}
       {isLoading && (
         <div className="spinner">
           <img src={isLightTheme ? LoadLight : LoadDark} alt="loading" />
