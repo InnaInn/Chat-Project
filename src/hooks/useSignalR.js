@@ -3,7 +3,7 @@ import * as signalR from "@microsoft/signalr";
 
 const endMsgTag = '<|im_end|>';
 
-export function useSignalR(setMessages, userId, setIsLoading) {
+export function useSignalR(setMessages, userId, setIsLoading, setPageData) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -45,6 +45,17 @@ export function useSignalR(setMessages, userId, setIsLoading) {
           return [...prev, { text: chunk, userId: "server", done: isFinal }];
         }
       });
+    });
+
+    connection.off("ReceiveRelatedDataMessage");
+    connection.on("ReceiveRelatedDataMessage", (server, jsonString) => {
+      try {
+        const parsed = JSON.parse(jsonString);
+        const allPageData = parsed.Data.map(item => item.PageData);
+        setPageData(allPageData);
+      } catch (error) {
+        console.error("Ошибка при парсинге JSON:", error, jsonString);
+      }
     });
 
     startConnection();

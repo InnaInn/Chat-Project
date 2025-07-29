@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import LoadDark from "../img/loading_dark.svg";
 import LoadLight from "../img/loading_light.svg";
-import DetailesLight from "../img/details_light.svg";
-import DetailesDark from "../img/details_dark.svg";
 import DetailesIcon from "../img/details_icon.svg";
 
-function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations, isLightTheme }) {
+function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLoading, language, translations, isLightTheme, pageData }) {
   const msgWrapperRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
 
@@ -58,12 +56,21 @@ function MessageList({ messages, userId, showWelcome, fadeOut, welcomeText, isLo
                     </button>
 
                     {showPopup && (
-                      <div className="popup">
-                        <div className="popupContent">
-                          <p>Здесь должен быть какой- то текст! Здесь должен быть какой- то текст! Здесь должен быть какой- то текст! Здесь должен быть какой- то текст!Здесь должен быть какой- то текст!</p>
-                          <button className="closeBtn" onClick={() => setShowPopup(false)}></button>
+                      <>
+                        <div
+                          className="popupOverlay"
+                          onClick={() => setShowPopup(false)}
+                        ></div>
+                        <div
+                          className="popup"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="popupContent">
+                            {pageData ? pageData : "Нет дополнительных данных"}
+                            <button className="closeBtn" onClick={() => setShowPopup(false)}>&#10006;</button>
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
                 )}

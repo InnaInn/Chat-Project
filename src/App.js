@@ -17,8 +17,9 @@ function App() {
   const [language, setLanguage] = useState("en");
   const textareaRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [pageData, setPageData] = useState('');
 
-  const socket = useSignalR(setMessages, userId, setIsLoading);
+  const socket = useSignalR(setMessages, userId, setIsLoading, setPageData);
 
   const toggleLanguage = () => {
     setLanguage((prevLang) => (prevLang === "ru" ? "en" : "ru"));
@@ -101,6 +102,7 @@ function App() {
           language={language}
           translations={translations}
           isLightTheme={isLightTheme}
+          pageData={pageData}
         />
         <MessageInput
           inputText={inputText}

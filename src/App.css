@@ -307,32 +307,50 @@ ol {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background: var(--bubble-bg);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   padding: 20px 30px;
   border-radius: 10px;
   z-index: 9999;
   animation: fadeIn 0.3s ease;
+  width: 50%;
+  overflow-x: hidden;
+
 }
 
 .popupContent {
   position: relative;
   font-size: 16px;
-  color: #333;
+  color: var(--text-color);
+  max-height: 50vh;
+  margin: 5px 5px 10px 5px;
+
 }
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+
 
 .closeBtn {
   position: absolute;
   top: -18px;
   right: -26px;
-  background: #4A90E2;
-  color: white;
+  background: var(--language-btn-bg);
+  color: var(--language-btn-color);
   border: none;
   border-radius: 50%;
   width: 24px;
   height: 24px;
   cursor: pointer;
+  margin-top: 5px;
 }
 
 @keyframes fadeIn {
@@ -617,6 +635,26 @@ input:checked~.slider::before {
     padding: 105px 10px 100px;
   }
 
+  .popup {
+    width: 90%;
+    padding: 15px 20px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+  }
+
+  .popupContent {
+    font-size: 14px;
+    max-height: 60vh;
+    margin: 5px;
+  }
+
+  .closeBtn {
+    right: -20px;
+    width: 20px;
+    height: 20px;
+  }
+
   .msg {
     max-width: 90%;
   }
@@ -676,12 +714,34 @@ input:checked~.slider::before {
     padding: 70px 20px 110px;
   }
 
+  .popup {
+    width: 70%;
+    padding: 20px 25px;
+    top: 48%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+  }
+
+  .popupContent {
+    font-size: 15px;
+    max-height: 60vh;
+    margin: 5px 10px;
+  }
+
+  .closeBtn {
+    top: -16px;
+    right: -24px;
+    width: 22px;
+    height: 22px;
+  }
+
   .input {
     width: 90%;
     bottom: 18px;
     padding: 10px;
     min-height: 75px;
   }
+
 
   .inputText {
     font-size: 16px;
