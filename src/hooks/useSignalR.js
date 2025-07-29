@@ -49,6 +49,7 @@ export function useSignalR(setMessages, userId, setIsLoading, setPageData) {
 
     connection.off("ReceiveRelatedDataMessage");
     connection.on("ReceiveRelatedDataMessage", (server, jsonString) => {
+      console.log(jsonString);
       try {
         const parsed = JSON.parse(jsonString);
         const allPageData = parsed.Data.map(item => item.PageData);

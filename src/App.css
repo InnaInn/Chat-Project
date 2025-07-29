@@ -324,7 +324,7 @@ ol {
   color: var(--text-color);
   max-height: 50vh;
   margin: 5px 5px 10px 5px;
-
+  white-space: pre-line;
 }
 
 .popupOverlay {
