@@ -4,8 +4,6 @@ import SendDark from "../img/send_dark.svg";
 import VoiceLight from "../img/voice_light.svg";
 import SendLight from "../img/send_light.svg";
 
-
-
 function MessageInput({
   inputText,
   setInputText,
@@ -16,35 +14,39 @@ function MessageInput({
   sendMessage,
   translations,
   language,
-  textareaRef = { textareaRef },
+  textareaRef,
   isLightTheme,
 }) {
-
   const containerRef = useRef(null);
 
   useEffect(() => {
     const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
 
-    const handleFocus = () => {
-      setTimeout(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-      }, 300); // задержка, чтобы клавиатура успела открыться
+    const scrollToInput = () => {
+      if (isMobile && containerRef.current) {
+        containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     };
 
-    const textarea = textareaRef.current;
-    if (isMobile && textarea) {
-      textarea.addEventListener("focus", handleFocus);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", scrollToInput);
     }
 
     return () => {
-      if (isMobile && textarea) {
-        textarea.removeEventListener("focus", handleFocus);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", scrollToInput);
       }
     };
-  }, [textareaRef]);
+  }, []);
 
+  const handleFocus = () => {
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    if (isMobile && containerRef.current) {
+      setTimeout(() => {
+        containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+    }
+  };
 
   return (
     <div className="input">
@@ -54,7 +56,7 @@ function MessageInput({
           value={inputText}
           onChange={(e) => {
             handleChange(e);
-            if (textareaRef.current) {
+            if (textareaRef?.current) {
               textareaRef.current.style.height = "auto";
               textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
             }
@@ -63,14 +65,8 @@ function MessageInput({
           placeholder={translations[language].messagePlaceholder}
           ref={textareaRef}
           rows="1"
-          onFocus={() => {
-            const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
-            if (isMobile && containerRef.current) {
-              setTimeout(() => {
-                containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-              }, 300);
-            }
-          }}
+          onFocus={handleFocus}
+          onTouchStart={handleFocus}
         />
       </div>
       {inputText.trim() === "" ? (
