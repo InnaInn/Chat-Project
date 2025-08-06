@@ -5,7 +5,7 @@ import burgerMenuDark from "../img/burgerMenuDark.svg";
 import closeImgDark from "../img/closeImgDark.svg";
 import closeImgLight from "../img/closeImgLight.svg";
 
-function Header({ language, toggleLanguage, translations, onToggleTheme, isLightTheme }) {
+function Header({ language, toggleLanguage, translations, onToggleTheme, isLightTheme,  onSelectGame }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -62,7 +62,7 @@ function Header({ language, toggleLanguage, translations, onToggleTheme, isLight
             <span className="slider"></span>
           </label>
         </div>
-        <GameSelector language={language} translations={translations} />
+        <GameSelector language={language} translations={translations} onSelectGame={onSelectGame} />
       </div>
       <div
         className={`burgerIcon mobileOnly ${menuOpen ? "menuOpen" : ""}`}

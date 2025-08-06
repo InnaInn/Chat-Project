@@ -8,7 +8,15 @@ const translations = {
     gamePlaceholder: "Выберите игру или начните ввод...",
     noSupport: "Браузер не поддерживает голосовой ввод",
     loading: "Мыслю над ответом...",
-    gameOptions: ["Древний Ужас", "Ужас Аркхэма", "Колонизаторы", "Ярость Дракулы", "Root", "Это моя война", "Эволюция"],
+    gameOptions: [
+      { uiName: "Древний Ужас", collectionType: "EldritchHorror"},
+      { uiName: "Ужас Аркхэма", collectionType: "ArkhamHorror"},
+      { uiName: "Колонизаторы", collectionType: "Catan"},
+      { uiName: "Ярость Дракулы", collectionType: "FuryOfDracula"},
+      { uiName: "Root", collectionType: "Root"},
+      { uiName: "Это моя война", collectionType: "ThisWarOfMine"},
+      { uiName: "Эволюция", collectionType: "Evolution"}
+    ],
 
   },
   en: {
@@ -20,7 +28,15 @@ const translations = {
     gamePlaceholder: "Choose a game or start typing...",
     noSupport: "Your browser doesn't support speech recognition",
     loading: "Thinking of a response...",
-    gameOptions: ["Eldritch Horror", "Arkham Horror", "Catan", "Fury of Dracula", "Root", "This War of Mine", "Evolution"],
+    gameOptions: [
+      { uiName: "Eldritch Horror", collectionType: "EldritchHorror"},
+      { uiName: "Arkham Horror", collectionType: "ArkhamHorror"},
+      { uiName: "Catan", collectionType: "Catan"},
+      { uiName: "Fury of Dracula", collectionType: "FuryOfDracula"},
+      { uiName: "Root", collectionType: "Root"},
+      { uiName: "This War of Mine", collectionType: "ThisWarOfMine"},
+      { uiName: "Evolution", collectionType: "Evolution"}
+    ]
   },
 };
 

@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 
-function GameSelector({ language, translations }) {
+function GameSelector({ language, translations, onSelectGame={onSelectGame} }) {
   const [value, setValue] = useState("");
   const [showList, setShowList] = useState(false);
 
   const options = translations[language].gameOptions;
   
   const filtered = options.filter(opt =>
-    opt.toLowerCase().includes(value.toLowerCase())
+    opt.uiName.toLowerCase().includes(value.toLowerCase())
   );
 
 const handleSelect = (option) => {
-    setValue(option);
+    setValue(option.uiName);
     setShowList(false);
+    onSelectGame(option);
   };
 
   return (
@@ -31,10 +32,11 @@ const handleSelect = (option) => {
           {filtered.map((option, i) => (
             <li
               key={i}
+              collection-type={option.collectionType}
               className="dropdownItem"
               onClick={() => handleSelect(option)}
             >
-              {option}
+              {option.uiName}
             </li>
           ))}
         </ul>

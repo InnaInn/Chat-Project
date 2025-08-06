@@ -18,6 +18,7 @@ function App() {
   const textareaRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [pageData, setPageData] = useState('');
+  const [selectedGame, setSelectedGame] = useState("");
 
   const socket = useSignalR(setMessages, userId, setIsLoading, setPageData);
 
@@ -57,7 +58,7 @@ function App() {
 
     setIsLoading(true);
 
-    socket.invoke("StreamMessage", userId, inputText).catch((err) =>
+    socket.invoke("StreamMessage", userId, inputText, selectedGame.collectionType).catch((err) =>
       console.error("Ошибка при отправке:", err)
     );
 
@@ -89,6 +90,7 @@ function App() {
         translations={translations}
         isLightTheme={isLightTheme}
         onToggleTheme={handleThemeToggle}
+        onSelectGame={setSelectedGame}
       />
 
       <div className="wrapper">
