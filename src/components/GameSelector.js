@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function GameSelector({ language, translations, onSelectGame={onSelectGame} }) {
-  const [value, setValue] = useState("");
+function GameSelector({ language, translations, onSelectGame }) {
+  const options = translations[language].gameOptions;
+  const [value, setValue] = useState(options.length > 0 ? options[0].uiName : "");
   const [showList, setShowList] = useState(false);
 
-  const options = translations[language].gameOptions;
-  
+  useEffect(() => {
+    if (options.length > 0) {
+      onSelectGame(options[0]);
+    }
+  }, [language, translations, onSelectGame]);
+
   const filtered = options.filter(opt =>
     opt.uiName.toLowerCase().includes(value.toLowerCase())
   );
 
-const handleSelect = (option) => {
+  const handleSelect = (option) => {
     setValue(option.uiName);
     setShowList(false);
     onSelectGame(option);
